@@ -1,0 +1,16 @@
+body {
+  background: black;
+}
+
+#led-spiral {
+  display: block;
+  margin: 0 auto;
+}
+
+#led-spiral .spiral {
+  fill: transparent;
+}
+
+#led-spiral circle {
+  stroke: rgba(255, 255, 255, 0.1);
+}
