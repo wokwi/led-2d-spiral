@@ -20,6 +20,7 @@ const c = clamp(parseFloat(urlParams.get('c')), 0.01, 16) || 6;
 const r = clamp(parseFloat(urlParams.get('r')), 50, 1000) || 200;
 const spirals = clamp(parseFloat(urlParams.get('spirals')), 1, 16) || 1;
 const ledRadius = clamp(parseFloat(urlParams.get('ledr')), 1, 16) || 2;
+const offset = clamp(parseFloat(urlParams.get('offset')), 0, 100) || 0;
 const svgns = 'http://www.w3.org/2000/svg';
 const size = { width: (r + ledRadius + 1) * 2, height: (r + ledRadius + 1) * 2 };
 root.setAttribute('width', size.width);
@@ -36,11 +37,12 @@ for (let spiralIndex = 0; spiralIndex < spirals; spiralIndex++) {
   root.appendChild(spiral);
 
   let theta = 0;
+  const scale =Math.sqrt(((numLeds + offset) / c) * 8);
   for (let index = 0; index < numLeds; index++) {
-    const radius = Math.sqrt((index / c) * 8 + 1);
+    const radius = Math.sqrt(((offset + index) / c) * 8 + 1);
     theta += Math.asin(1 / radius);
-    const x = (r / Math.sqrt((numLeds / c) * 8)) * radius * Math.cos(theta);
-    const y = (r / Math.sqrt((numLeds / c) * 8)) * radius * Math.sin(theta);
+    const x = r / scale * radius * Math.cos(theta);
+    const y = r / scale * radius * Math.sin(theta);
     const circle = document.createElementNS(svgns, 'circle');
     circle.setAttribute('cx', center.x + x);
     circle.setAttribute('cy', center.y + y);
