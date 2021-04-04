@@ -52,7 +52,10 @@ for (let spiralIndex = 0; spiralIndex < spirals; spiralIndex++) {
   }
 }
 
-parent.postMessage({ app: 'wokwi', command: 'listen', version: 1 }, 'https://wokwi.com');
+// Workaround for a Wokwi sometimes missing the first message
+let listener = setInterval(() => {
+  parent.postMessage({ app: 'wokwi', command: 'listen', version: 1 }, 'https://wokwi.com');
+}, 200);
 
 window.addEventListener('message', ({ data }) => {
   if (data.neopixels) {
@@ -65,6 +68,10 @@ window.addEventListener('message', ({ data }) => {
       if (pixels[i]) {
         pixels[i].setAttribute('fill', `rgb(${r}, ${g}, ${b})`);
       }
+    }
+    if (listener != null) {
+      clearInterval(listener);
+      listener = null;
     }
   }
 });
